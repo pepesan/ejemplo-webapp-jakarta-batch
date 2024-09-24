@@ -1,0 +1,17 @@
+services:
+  wildfly:
+    image: quay.io/wildfly/wildfly:latest
+    container_name: wildfly
+    ports:
+      - "8080:8080"
+      - "9990:9990"  # Puerto para el administrador
+    volumes:
+      #- ./standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
+      - "./deployments:/opt/jboss/wildfly/standalone/deployments"
+      - /tmp:/tmp
+      - "./mgmt-users.properties:/opt/jboss/wildfly/standalone/configuration/mgmt-users.properties"
+    command: /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+    stdin_open: true
+    tty: true
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx1024m
